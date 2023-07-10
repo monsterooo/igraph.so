@@ -1,0 +1,216 @@
+* {
+  user-select: none;
+}
+
+.light-button {
+  --rx:0.00325468;
+  --x:0.00325468;
+  --y:0.762663;
+  --hover: 1; // 始终显示
+  --radius: 4px;
+  --text-padding: 8px 16px;
+  --border: 0px;
+  --padding: 1px;
+  border-radius: var(--radius);
+  border: 0;
+  // background: hsl(0 0% 90%);
+  // box-shadow:
+  //   inset 0 1px 0px 0px hsl(0 0% 100% / 0.5),
+  //   inset 0 -1px 0px 0px hsl(0 0% 0% / 0.5);
+/*   background:
+    conic-gradient(from calc(var(--rx) * 360deg) at calc(var(--x) * 1px) calc(var(--y) * 1px), hsl(10 90% 50%), hsl(140 70% 50%), hsl(320 70% 50%), hsl(210 70% 50%), hsl(10 70% 50%));
+  background-attachment: fixed; */
+  font-family: sans-serif, system-ui;
+  // font-size: 1.25rem;
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(--padding);
+  // border: var(--border) solid hsl(0 0% 80%);
+  transform: translate(calc(var(--active, 0) * -2px), calc(var(--active, 0) * 2px));
+  transition: transform 0.1s;
+  // color: hsl(0 0% 20%);
+  color: rgb(241 245 249);
+  border-radius: var(--radius);
+
+  // &:is(:hover, :focus-visible) {
+  //   --hover: 1;
+  //   // border-color: transparent !important;
+  // }
+  &:active {
+    --active: 1;
+  }
+  &:before{
+    content: "";
+    position: absolute;
+    inset: 0px;
+    // width: 100%;
+    // aspect-ratio: 1;
+    // top: 50%;
+    // left: 50%;
+    // translate: -50% -50%;
+    border-radius: calc(var(--radius) - var(--border));
+    // transition: background 0.2s;
+    background: hsl(0 0% 100% / calc(1 - var(--hover, 0) * 0.25));
+    // background: grey;
+    background:
+      conic-gradient(
+        from calc(var(--rx, 0) * 180deg) at
+          calc(var(--x, 0) * 100%) calc(var(--y, 0) * 100%),
+        hsl(10 90% 70%),
+        hsl(140 80% 70%),
+        hsl(320 80% 70%),
+        hsl(210 80% 70%),
+        hsl(10 80% 70%)
+      );
+    filter: saturate(0.7);
+    opacity: var(--hover, 0);
+    transition: opacity 0.2s;
+  }
+
+  &__backdrop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    // background: hsl(0 0% 98% / 0.6);
+    background: rgba(30, 41, 59, 1);
+    border-radius: calc(var(--radius) - var(--padding));
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    backdrop-filter: blur(20px) brightness(1.5);
+  }
+
+  &__text {
+    padding: var(--text-padding);
+    grid-row: 1;
+    grid-column: 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.logo {
+  path {
+    fill: inherit;
+  }
+}
+
+.light {
+  .logo {
+    path {
+      fill: #1e293b;
+    }
+  }
+}
+
+.dark {
+  .logo {
+    path {
+      fill: white;
+    }
+  }
+  .rc-tooltip-inner {
+    background: white;
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .rc-tooltip-placement-bottom .rc-tooltip-arrow, .rc-tooltip-placement-bottomLeft .rc-tooltip-arrow, .rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
+    border-bottom-color: white;
+  }
+
+  .rc-tooltip-placement-bottom .rc-tooltip-arrow {
+    top: 4px !important;
+  }
+
+  .dataset {
+    --dsg-cell-background-color: #1e293b;
+    --dsg-border-color: #64748B;
+    .dsg-container {
+      color: white;
+    }
+  }
+
+  .graph-table {
+    .handsontableInput {
+      color: rgb(241 245 249);
+      background-color: rgb(30 41 59);
+      box-shadow: 0 0 0 2px rgb(241 245 249) inset;
+    }
+    .handsontable {
+      tr {
+        &:first-child {
+          background-color: #334155;
+        }
+      }
+      tr, td, th {
+        color: rgb(241 245 249);
+        background: transparent;
+      }
+      th, td, tr:first-child th, tr:first-child td {
+        border-color: rgb(100 116 139);
+      }
+    }
+    .htBorders {
+      .wtBorder {
+        background-color: rgb(241 245 249) !important; // 选中边框颜色
+      }
+    }
+  }
+}
+
+@keyframes ZoomBigIn {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ZoomBigOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+.zoom-big-fast {
+  &-enter {
+    animation-duration: .05s;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+
+    transform: scale(0);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(.08,.82,.17,1);
+
+    &-active {
+      animation-name: ZoomBigIn;
+      animation-play-state: running
+    }
+  }
+  &-leave {
+    animation-duration: .05s;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+
+    animation-timing-function: cubic-bezier(.78,.14,.15,.86);
+
+    &-active {
+      animation-name: ZoomBigOut;
+      animation-play-state: running;
+      pointer-events: none;
+    }
+  }
+}
+
